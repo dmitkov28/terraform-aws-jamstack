@@ -7,15 +7,3 @@ variable "cloudflare_zone_id" {
   type        = string
   sensitive   = true
 }
-
-variable "cname_key" {
-  type = string
-}
-
-variable "cname_value" {
-  type = string
-}
-
-
-
-
