@@ -16,7 +16,7 @@ variable "cloudfront_redirect_domain" {
 variable "subdomain" {
   description = "Subdomain for the main site (e.g., 'test')"
   type        = string
-  default     = "test"
+  default     = null
 }
 
 variable "ttl" {
