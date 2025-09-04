@@ -6,6 +6,10 @@ resource "cloudflare_dns_record" "main_cname" {
   ttl     = var.ttl
   proxied = var.proxied
 
+  settings = {
+    flatten_cname = var.subdomain != null || var.subdomain != ""
+  }
+
   lifecycle {
     create_before_destroy = true
   }
