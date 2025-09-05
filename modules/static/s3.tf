@@ -108,7 +108,7 @@ locals {
 resource "aws_s3_object" "dist_files" {
   for_each = local.files
 
-  bucket = aws_s3_bucket.static_site
+  bucket = aws_s3_bucket.static_site.bucket
   key    = each.value
   source = "${local.dist_dir}/${each.value}"
   etag   = filemd5("${local.dist_dir}/${each.value}")
