@@ -16,4 +16,9 @@ variable "aws_acm_certificate_arn" {
 
 variable "static_site_build_dist" {
   type = string
+
+  validation {
+    condition     = can(fileset(var.static_site_build_dist, "**")) && length(fileset(var.static_site_build_dist, "**")) > 0
+    error_message = "The directory '${var.static_site_build_dist}' must exist and contain at least one file."
+  }
 }
