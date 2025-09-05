@@ -22,13 +22,13 @@ resource "aws_s3_bucket_website_configuration" "redirect_www" {
   bucket = aws_s3_bucket.redirect_www.id
 
   redirect_all_requests_to {
-    host_name = var.domain_name     
+    host_name = var.domain_name
     protocol  = "https"
   }
 }
 
 resource "aws_s3_bucket_policy" "redirect_www_policy" {
-  bucket = aws_s3_bucket.redirect_www.id
+  bucket     = aws_s3_bucket.redirect_www.id
   depends_on = [aws_s3_bucket_public_access_block.redirect_www]
 
   policy = jsonencode({
@@ -99,3 +99,33 @@ resource "aws_s3_bucket_public_access_block" "static_site" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+locals {
+  dist_dir = var.static_site_build_dist
+  files    = fileset(local.dist_dir, "**")
+}
+
+resource "aws_s3_object" "dist_files" {
+  for_each = local.files
+
+  bucket = aws_s3_bucket.static_site
+  key    = each.value
+  source = "${local.dist_dir}/${each.value}"
+  etag   = filemd5("${local.dist_dir}/${each.value}")
+
+  content_type = lookup(
+    {
+      html = "text/html"
+      js   = "application/javascript"
+      css  = "text/css"
+      png  = "image/png"
+      jpg  = "image/jpeg"
+      jpeg = "image/jpeg"
+      svg  = "image/svg+xml"
+      json = "application/json"
+    },
+    regex("\\.([^.]+)$", each.value)[0],
+    "binary/octet-stream"
+  )
+}
+

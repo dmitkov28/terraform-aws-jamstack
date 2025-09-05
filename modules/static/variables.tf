@@ -13,3 +13,7 @@ variable "domain_name" {
 variable "aws_acm_certificate_arn" {
   type = string
 }
+
+variable "static_site_build_dist" {
+  type = string
+}
