@@ -10,18 +10,28 @@ variable "domain" {
   default     = "dimitarmitkov.com"
 }
 
-variable "ecr_image_uri" {
-  description = "ECR image URI"
-  type        = string
-
-}
-
-variable "CLOUDFLARE_ZONE_ID" {
+variable "cloudflare_zone_id" {
   description = "Cloudflare Zone Id"
   type        = string
   sensitive   = true
 }
 
+variable "image_architecture" {
+  type    = string
+  default = "linux/arm64"
+  validation {
+    condition     = contains(["linux/amd64", "linux/arm64"], var.image_architecture)
+    error_message = "Image architecture must be either 'linux/amd64' or 'linux/arm64'."
+  }
+}
+
+variable "image_tag" {
+  type = string
+}
+
+variable "build_context" {
+  type = string
+}
 
 
 

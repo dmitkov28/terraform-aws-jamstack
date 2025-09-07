@@ -4,13 +4,13 @@ module "lambda_function" {
 
   function_name = local.lambda_function_name
   description   = "Managed by Terraform"
-  architectures = ["arm64"]
+  architectures = [var.image_architecture]
 
   create_package = false
   memory_size    = 512
   timeout        = 120
 
-  image_uri                         = var.ecr_image_uri
+  image_uri                         = docker_registry_image.ecr_image.name
   package_type                      = "Image"
   cloudwatch_logs_retention_in_days = 14
 
