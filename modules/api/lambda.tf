@@ -4,7 +4,7 @@ module "lambda_function" {
 
   function_name = local.lambda_function_name
   description   = "Managed by Terraform"
-  architectures = [var.image_architecture]
+  architectures = [var.image_architecture == "linux/amd64" ? "x86_64" : "arm64"]
 
   create_package = false
   memory_size    = 512
