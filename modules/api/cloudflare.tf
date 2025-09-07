@@ -1,5 +1,5 @@
 resource "cloudflare_dns_record" "cname_record" {
-  zone_id = var.CLOUDFLARE_ZONE_ID
+  zone_id = var.cloudflare_zone_id
   name    = var.api_name
   type    = "CNAME"
   content = aws_apigatewayv2_domain_name.this.domain_name_configuration[0].target_domain_name
@@ -18,7 +18,7 @@ resource "cloudflare_dns_record" "cert_validation" {
     }
   }
 
-  zone_id = var.CLOUDFLARE_ZONE_ID
+  zone_id = var.cloudflare_zone_id
   name    = each.value.name
   content = each.value.value
   type    = each.value.type
